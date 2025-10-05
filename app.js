@@ -2,168 +2,110 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Словарь с антонимами</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Интерактивный словарь слов</title>
 <style>
-  body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 20px; }
-  ul { list-style: none; padding: 0; }
-  li { 
-    background: #fff; 
-    margin: 5px 0; 
-    padding: 10px; 
-    border-radius: 5px; 
-    cursor: pointer; 
-    transition: background 0.2s;
+  body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to right, #c0e0ff, #ffffff);
+    padding: 20px;
+    color: #333;
   }
-  li:hover { background: #e0f7fa; }
-  .antonyms { color: #d32f2f; margin-top: 5px; }
-  .meaning { color: #555; }
+  h1 {
+    text-align: center;
+    color: #004080;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px #aaa;
+  }
+  #word-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+  }
+  .word-item {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+    position: relative;
+  }
+  .word-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    background: #e0f0ff;
+  }
+  .word {
+    font-weight: bold;
+    font-size: 18px;
+    color: #004080;
+  }
+  .meaning {
+    display: block;
+    margin-top: 5px;
+    color: #555;
+  }
+  .antonyms {
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    background-color: #ffe0e0;
+    color: #c00000;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.4s, transform 0.4s;
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+  }
+  .antonyms.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
 </style>
 </head>
 <body>
 
-<h1>Словарь слов с антонимами</h1>
+<h1>Интерактивный словарь слов с антонимами</h1>
 <ul id="word-list"></ul>
 
 <script>
 const words = [
-  { word: "Alive", meaning: "Живой", antonyms: ["Dead", "Unconscious"] },
-  { word: "Advance", meaning: "Продвигаться", antonyms: ["Retreat", "Behind"] },
-  { word: "Admit", meaning: "Признавать", antonyms: ["Deny", "Expel"] },
-  { word: "Agree", meaning: "Соглашаться", antonyms: ["Disagree", "Reject"] },
-  { word: "Absence", meaning: "Отсутствие", antonyms: ["Presence"] },
-  { word: "Abundant", meaning: "Изобильный, обильный", antonyms: ["Scarce"] },
-  { word: "Accurate", meaning: "Точный", antonyms: ["Inaccurate"] },
-  { word: "Advantage", meaning: "Преимущество", antonyms: ["Disadvantage"] },
-  { word: "Artificial", meaning: "Искусственный", antonyms: ["Natural"] },
-  { word: "Attack", meaning: "Атака", antonyms: ["Defense"] },
-  { word: "Accept", meaning: "Принимать", antonyms: ["Reject"] },
-  { word: "Ascend", meaning: "Подниматься", antonyms: ["Descend"] },
-  { word: "Attention", meaning: "Внимание", antonyms: ["Neglect"] },
-  { word: "Approach", meaning: "Подходить", antonyms: ["Retreat"] },
-  { word: "Approval", meaning: "Одобрение", antonyms: ["Disapproval"] },
-  { word: "Ancient", meaning: "Древний", antonyms: ["Modern"] },
-  { word: "Asleep", meaning: "Спящий", antonyms: ["Awake"] },
-  { word: "Ally", meaning: "Союзник", antonyms: ["Enemy"] },
-  { word: "Bravery", meaning: "Храбрость", antonyms: ["Cowardice"] },
-  { word: "Courteous", meaning: "Вежливый", antonyms: ["Rude"] },
-  { word: "Broad", meaning: "Широкий", antonyms: ["Narrow"] },
-  { word: "Blunt", meaning: "Прямой, тупой", antonyms: ["Sharp"] },
-  { word: "Captivity", meaning: "Плен", antonyms: ["Freedom"] },
-  { word: "Correct", meaning: "Правильный", antonyms: ["Incorrect"] },
-  { word: "Cunning", meaning: "Хитрый", antonyms: ["Naive"] },
-  { word: "Courage", meaning: "Мужество", antonyms: ["Timidity"] },
-  { word: "Calm", meaning: "Спокойный", antonyms: ["Agitated"] },
-  { word: "Comfort", meaning: "Комфорт", antonyms: ["Discomfort"] },
-  { word: "Cruel", meaning: "Жестокий", antonyms: ["Kind"] },
-  { word: "Borrow", meaning: "Брать взаймы", antonyms: ["Lend"] },
-  { word: "Clever", meaning: "Умный", antonyms: ["Foolish"] },
-  { word: "Beginning", meaning: "Начало", antonyms: ["End"] },
-  { word: "Cheap", meaning: "Дешёвый", antonyms: ["Expensive"] },
-  { word: "Beautiful", meaning: "Красивый", antonyms: ["Ugly"] },
-  { word: "Conceal", meaning: "Скрывать", antonyms: ["Reveal"] },
-  { word: "Capable", meaning: "Способный", antonyms: ["Incapable"] },
-  { word: "Careful", meaning: "Осторожный", antonyms: ["Careless"] },
-  { word: "Bitter", meaning: "Горький", antonyms: ["Sweet"] },
-  { word: "Blame", meaning: "Винить", antonyms: ["Praise"] },
-  { word: "Dainty", meaning: "Изысканный", antonyms: ["Coarse"] },
-  { word: "Frank", meaning: "Откровенный", antonyms: ["Secretive"] },
-  { word: "Feeble", meaning: "Слабый", antonyms: ["Strong"] },
-  { word: "Freedom", meaning: "Свобода", antonyms: ["Captivity"] },
-  { word: "Foolish", meaning: "Глупый", antonyms: ["Wise"] },
-  { word: "Demand", meaning: "Требовать", antonyms: ["Supply"] },
-  { word: "Famous", meaning: "Известный", antonyms: ["Unknown"] },
-  { word: "First", meaning: "Первый", antonyms: ["Last"] },
-  { word: "Friend", meaning: "Друг", antonyms: ["Enemy"] },
-  { word: "Ebb", meaning: "Убывать", antonyms: ["Flow"] },
-  { word: "Fortunate", meaning: "Счастливый", antonyms: ["Unfortunate"] },
-  { word: "Decrease", meaning: "Уменьшение", antonyms: ["Increase"] },
-  { word: "Dark", meaning: "Тёмный", antonyms: ["Light"] },
-  { word: "Expand", meaning: "Расширять", antonyms: ["Shrink"] },
-  { word: "Entrance", meaning: "Вход", antonyms: ["Exit"] },
-  { word: "Despair", meaning: "Отчаяние", antonyms: ["Hope"] },
-  { word: "Expensive", meaning: "Дорогой", antonyms: ["Cheap"] },
-  { word: "Fail", meaning: "Потерпеть неудачу", antonyms: ["Succeed"] },
-  { word: "Generous", meaning: "Щедрый", antonyms: ["Stingy"] },
-  { word: "Hard", meaning: "Твёрдый, трудный", antonyms: ["Soft"] },
-  { word: "Honest", meaning: "Честный", antonyms: ["Dishonest"] },
-  { word: "Hot", meaning: "Горячий", antonyms: ["Cold"] },
-  { word: "Huge", meaning: "Огромный", antonyms: ["Tiny"] },
-  { word: "Idle", meaning: "Бездельничающий", antonyms: ["Busy"] },
-  { word: "Important", meaning: "Важный", antonyms: ["Unimportant"] },
-  { word: "Include", meaning: "Включать", antonyms: ["Exclude"] },
-  { word: "Increase", meaning: "Увеличивать", antonyms: ["Decrease"] },
-  { word: "Inferior", meaning: "Ниже по качеству", antonyms: ["Superior"] },
-  { word: "Joyful", meaning: "Радостный", antonyms: ["Sad"] },
-  { word: "Kind", meaning: "Добрый", antonyms: ["Cruel"] },
-  { word: "Large", meaning: "Большой", antonyms: ["Small"] },
-  { word: "Lazy", meaning: "Ленивый", antonyms: ["Industrious"] },
-  { word: "Light", meaning: "Светлый, лёгкий", antonyms: ["Dark", "Heavy"] },
-  { word: "Long", meaning: "Длинный", antonyms: ["Short"] },
-  { word: "Loose", meaning: "Свободный", antonyms: ["Tight"] },
-  { word: "Love", meaning: "Любовь", antonyms: ["Hate"] },
-  { word: "Major", meaning: "Главный", antonyms: ["Minor"] },
-  { word: "Minor", meaning: "Малый, второстепенный", antonyms: ["Major"] },
-  { word: "Mortal", meaning: "Смертный", antonyms: ["Immortal"] },
-  { word: "Natural", meaning: "Естественный", antonyms: ["Artificial"] },
-  { word: "Near", meaning: "Близкий", antonyms: ["Far"] },
-  { word: "Neat", meaning: "Аккуратный", antonyms: ["Messy"] },
-  { word: "Night", meaning: "Ночь", antonyms: ["Day"] },
-  { word: "Noisy", meaning: "Шумный", antonyms: ["Quiet"] },
-  { word: "Obedient", meaning: "Послушный", antonyms: ["Disobedient"] },
-  { word: "Open", meaning: "Открытый", antonyms: ["Closed"] },
-  { word: "Optimistic", meaning: "Оптимистичный", antonyms: ["Pessimistic"] },
-  { word: "Ordinary", meaning: "Обычный", antonyms: ["Extraordinary"] },
-  { word: "Outgoing", meaning: "Общительный", antonyms: ["Shy"] },
-  { word: "Patient", meaning: "Терпеливый", antonyms: ["Impatient"] },
-  { word: "Peaceful", meaning: "Мирный", antonyms: ["Violent"] },
-  { word: "Perfect", meaning: "Совершенный", antonyms: ["Imperfect"] },
-  { word: "Polite", meaning: "Вежливый", antonyms: ["Rude"] },
-  { word: "Poor", meaning: "Бедный", antonyms: ["Rich"] },
-  { word: "Powerful", meaning: "Могущественный", antonyms: ["Weak"] },
-  { word: "Precise", meaning: "Точный", antonyms: ["Imprecise"] },
-  { word: "Present", meaning: "Настоящий, присутствующий", antonyms: ["Absent"] },
-  { word: "Private", meaning: "Частный", antonyms: ["Public"] },
-  { word: "Profitable", meaning: "Прибыльный", antonyms: ["Unprofitable"] },
-  { word: "Quick", meaning: "Быстрый", antonyms: ["Slow"] },
-  { word: "Quiet", meaning: "Тихий", antonyms: ["Noisy"] },
-  { word: "Rare", meaning: "Редкий", antonyms: ["Common"] },
-  { word: "Raw", meaning: "Сырой", antonyms: ["Cooked"] },
-  { word: "Rich", meaning: "Богатый", antonyms: ["Poor"] },
-  { word: "Rough", meaning: "Грубый", antonyms: ["Smooth"] },
-  { word: "Safe", meaning: "Безопасный", antonyms: ["Dangerous"] },
-  { word: "Scarce", meaning: "Редкий, дефицитный", antonyms: ["Abundant"] },
-  { word: "Sharp", meaning: "Острый", antonyms: ["Blunt"] },
-  { word: "Short", meaning: "Короткий", antonyms: ["Long"] },
-  { word: "Shy", meaning: "Стеснительный", antonyms: ["Outgoing"] },
-  { word: "Simple", meaning: "Простой", antonyms: ["Complex"] },
-  { word: "Slow", meaning: "Медленный", antonyms: ["Quick"] },
-  { word: "Small", meaning: "Малый", antonyms: ["Large"] },
-  { word: "Soft", meaning: "Мягкий", antonyms: ["Hard"] },
-  { word: "Sour", meaning: "Кислый", antonyms: ["Sweet"] },
-  { word: "Strong", meaning: "Сильный", antonyms: ["Weak"] },
-  { word: "Sweet", meaning: "Сладкий", antonyms: ["Bitter", "Sour"] },
-  { word: "Tall", meaning: "Высокий", antonyms: ["Short"] },
-  { word: "Tame", meaning: "Ручной", antonyms: ["Wild"] },
-  { word: "Thick", meaning: "Толстый", antonyms: ["Thin"] },
-  { word: "Thin", meaning: "Тонкий, худой", antonyms: ["Thick", "Fat"] },
-  { word: "Tidy", meaning: "Аккуратный", antonyms: ["Messy"] },
-  { word: "Tiny", meaning: "Крошечный", antonyms: ["Huge"] },
-  { word: "Tough", meaning: "Жёсткий", antonyms: ["Tender"] },
-  { word: "True", meaning: "Правдивый", antonyms: ["False"] },
-  { word: "Ugly", meaning: "Уродливый", antonyms: ["Beautiful"] },
-  { word: "Unaware", meaning: "Неосведомлённый", antonyms: ["Aware"] },
-  { word: "Uncommon", meaning: "Необычный", antonyms: ["Common"] },
-  { word: "Unfortunate", meaning: "Несчастливый", antonyms: ["Fortunate"] },
-  { word: "Unhappy", meaning: "Несчастный", antonyms: ["Happy"] },
-  { word: "Unknown", meaning: "Неизвестный", antonyms: ["Famous"] },
-  { word: "Unkind", meaning: "Жестокий, недобрый", antonyms: ["Kind"] },
-  { word: "Unsafe", meaning: "Опасный", antonyms: ["Safe"] },
-  { word: "Weak", meaning: "Слабый", antonyms: ["Strong"] },
-  { word: "Wet", meaning: "Мокрый", antonyms: ["Dry"] },
-  { word: "Wild", meaning: "Дикий", antonyms: ["Tame"] },
-  { word: "Wise", meaning: "Мудрый", antonyms: ["Foolish"] },
-  { word: "Wrong", meaning: "Неправильный", antonyms: ["Right"] },
-  { word: "Young", meaning: "Молодой", antonyms: ["Old"] }
+  { word: "Alive", meaning: "Живой", antonyms: ["Dead", "Unconscious"]},
+  { word: "Advance", meaning: "Продвигаться", antonyms: ["Retreat", "Behind"]},
+  { word: "Admit", meaning: "Признавать", antonyms: ["Deny", "Expel"]},
+  { word: "Agree", meaning: "Соглашаться", antonyms: ["Disagree", "Reject"]},
+  { word: "Absence", meaning: "Отсутствие", antonyms: ["Presence"]},
+  { word: "Abundant", meaning: "Изобильный", antonyms: ["Scarce"]},
+  { word: "Accurate", meaning: "Точный", antonyms: ["Inaccurate"]},
+  { word: "Artificial", meaning: "Искусственный", antonyms: ["Natural"]},
+  { word: "Attack", meaning: "Атака", antonyms: ["Defense"]},
+  { word: "Accept", meaning: "Принимать", antonyms: ["Reject"]},
+  { word: "Ascend", meaning: "Подниматься", antonyms: ["Descend"]},
+  { word: "Attention", meaning: "Внимание", antonyms: ["Neglect"]},
+  { word: "Bravery", meaning: "Храбрость", antonyms: ["Cowardice"]},
+  { word: "Calm", meaning: "Спокойный", antonyms: ["Agitated"]},
+  { word: "Clever", meaning: "Умный", antonyms: ["Foolish"]},
+  { word: "Dark", meaning: "Тёмный", antonyms: ["Light"]},
+  { word: "Expensive", meaning: "Дорогой", antonyms: ["Cheap"]},
+  { word: "Fail", meaning: "Потерпеть неудачу", antonyms: ["Succeed"]},
+  { word: "Generous", meaning: "Щедрый", antonyms: ["Stingy"]},
+  { word: "Hot", meaning: "Горячий", antonyms: ["Cold"]},
+  { word: "Important", meaning: "Важный", antonyms: ["Unimportant"]},
+  { word: "Joyful", meaning: "Радостный", antonyms: ["Sad"]},
+  { word: "Kind", meaning: "Добрый", antonyms: ["Cruel"]},
+  { word: "Love", meaning: "Любовь", antonyms: ["Hate"]},
+  { word: "Peaceful", meaning: "Мирный", antonyms: ["Violent"]},
+  { word: "Quick", meaning: "Быстрый", antonyms: ["Slow"]},
+  { word: "Safe", meaning: "Безопасный", antonyms: ["Dangerous"]},
+  { word: "Strong", meaning: "Сильный", antonyms: ["Weak"]},
+  { word: "Ugly", meaning: "Уродливый", antonyms: ["Beautiful"]},
+  { word: "Young", meaning: "Молодой", antonyms: ["Old"]}
 ];
 
 const wordList = document.getElementById('word-list');
@@ -172,19 +114,20 @@ function displayWords(list) {
   wordList.innerHTML = '';
   list.forEach(w => {
     const li = document.createElement('li');
-    li.innerHTML = `<strong>${w.word}</strong> — <span class="meaning">${w.meaning}</span>`;
-    
+    li.className = 'word-item';
+    li.innerHTML = `
+      <span class="word">${w.word}</span>
+      <span class="meaning">${w.meaning}</span>
+      <div class="antonyms">Антонимы: ${w.antonyms.join(', ')}</div>
+    `;
+
+    const antonymsDiv = li.querySelector('.antonyms');
+
+    // Изначально скрываем антонимы
+    antonymsDiv.classList.remove('show');
+
     li.addEventListener('click', () => {
-      // Проверяем, есть ли уже антонимы
-      if (!li.querySelector('.antonyms')) {
-        const antonymsDiv = document.createElement('div');
-        antonymsDiv.className = 'antonyms';
-        antonymsDiv.textContent = 'Антонимы: ' + w.antonyms.join(', ');
-        li.appendChild(antonymsDiv);
-      } else {
-        // Если уже есть — скрываем
-        li.querySelector('.antonyms').remove();
-      }
+      antonymsDiv.classList.toggle('show');
     });
 
     wordList.appendChild(li);
@@ -197,5 +140,3 @@ displayWords(words);
 
 </body>
 </html>
-
-
