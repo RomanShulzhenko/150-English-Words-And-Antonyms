@@ -1,3 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Словарь с антонимами</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f2f2f2; padding: 20px; }
+  ul { list-style: none; padding: 0; }
+  li { 
+    background: #fff; 
+    margin: 5px 0; 
+    padding: 10px; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background 0.2s;
+  }
+  li:hover { background: #e0f7fa; }
+  .antonyms { color: #d32f2f; margin-top: 5px; }
+  .meaning { color: #555; }
+</style>
+</head>
+<body>
+
+<h1>Словарь слов с антонимами</h1>
 <ul id="word-list"></ul>
 
 <script>
@@ -148,12 +172,19 @@ function displayWords(list) {
   wordList.innerHTML = '';
   list.forEach(w => {
     const li = document.createElement('li');
-    li.className = 'word-item';
     li.innerHTML = `<strong>${w.word}</strong> — <span class="meaning">${w.meaning}</span>`;
     
     li.addEventListener('click', () => {
-      const antonymsHTML = `<div class="antonyms">Антонимы: ${w.antonyms.join(', ')}</div>`;
-      li.innerHTML = `<strong>${w.word}</strong> — <span class="meaning">${w.meaning}</span>${antonymsHTML}`;
+      // Проверяем, есть ли уже антонимы
+      if (!li.querySelector('.antonyms')) {
+        const antonymsDiv = document.createElement('div');
+        antonymsDiv.className = 'antonyms';
+        antonymsDiv.textContent = 'Антонимы: ' + w.antonyms.join(', ');
+        li.appendChild(antonymsDiv);
+      } else {
+        // Если уже есть — скрываем
+        li.querySelector('.antonyms').remove();
+      }
     });
 
     wordList.appendChild(li);
@@ -163,4 +194,8 @@ function displayWords(list) {
 // Показываем все слова
 displayWords(words);
 </script>
+
+</body>
+</html>
+
 
