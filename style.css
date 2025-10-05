@@ -1,0 +1,53 @@
+body {
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+.container {
+  max-width: 600px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  padding: 2rem;
+}
+
+h1 {
+  text-align: center;
+  color: #ff5e62;
+}
+
+#search {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 10px;
+  border: 2px solid #ff5e62;
+}
+
+.word-item {
+  padding: 10px;
+  margin: 5px 0;
+  background: #ffe6e6;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.word-item:hover {
+  transform: scale(1.02);
+  background: #ffcccc;
+}
+
+.meaning {
+  color: #ff5e62;
+}
+
+.antonyms {
+  margin-top: 5px;
+  color: #ff3b3b;
+}
