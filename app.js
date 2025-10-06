@@ -3,28 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Живой анимированный словарь</title>
+<title>Яркий анимированный словарь</title>
 <style>
   body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #f6d365, #fda085);
     margin: 0;
-    padding: 20px;
+    padding: 0;
   }
 
-  h1 {
-    text-align: center;
-    font-size: 2.5em;
-    color: #2d3436;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px #fff;
+  header {
+    width: 100%;
+    height: 200px;
+    background: url('your-image.jpg') center/cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 2px 2px #000;
+  }
+
+  header h1 {
+    color: #fff;
+    font-size: 3em;
   }
 
   ul {
     list-style: none;
     padding: 0;
     max-width: 900px;
-    margin: auto;
+    margin: 20px auto;
   }
 
   .word-item {
@@ -89,7 +96,10 @@
 </head>
 <body>
 
-<h1>Яркий анимированный словарь</h1>
+<header>
+  <h1>Яркий словарь</h1>
+</header>
+
 <ul id="word-list"></ul>
 
 <script>
@@ -126,7 +136,6 @@ function displayWords(list) {
     
     wordList.appendChild(li);
 
-    // Анимация появления слов по очереди
     setTimeout(() => li.classList.add('show'), index * 150);
   });
 }
