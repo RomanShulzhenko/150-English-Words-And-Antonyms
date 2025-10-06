@@ -15,7 +15,7 @@
   header {
     width: 100%;
     height: 200px;
-    background: url('your-image.jpg') center/cover no-repeat;
+    background: url('https://github.com/RomanShulzhenko/150-English-Words-And-Antonyms/blob/main/%D1%88%D0%B0%D0%BF%D0%BA%D0%B0%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.jpg?raw=true') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,3 +145,4 @@ displayWords(words);
 
 </body>
 </html>
+
