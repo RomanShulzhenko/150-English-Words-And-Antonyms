@@ -2,57 +2,14 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Словарь слов</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background: #f9f9f9;
-  }
-  .word-item {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #fff;
-  }
-  .antonyms {
-    margin-top: 5px;
-    color: #d00;
-    display: none;
-  }
-</style>
+<title>Красочный Словарь</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>Словарь слов с антонимами</h1>
+<div class="header">Мой Красочный Словарь</div>
 <ul id="word-list"></ul>
 
-<script>
-const words = [
-  { word: "Alive", meaning: "Живой", antonyms: ["Dead", "Unconscious"] },
-  { word: "Advance", meaning: "Продвигаться", antonyms: ["Retreat", "Behind"] },
-  { word: "Admit", meaning: "Признавать", antonyms: ["Deny", "Expel"] },
-  { word: "Agree", meaning: "Соглашаться", antonyms: ["Disagree", "Reject"] }
-];
-
-const wordList = document.getElementById('word-list');
-
-words.forEach(w => {
-  const li = document.createElement('li');
-  li.className = 'word-item';
-  li.innerHTML = `<strong>${w.word}</strong> — ${w.meaning}
-                  <div class="antonyms">Антонимы: ${w.antonyms.join(', ')}</div>`;
-
-  const antonymsDiv = li.querySelector('.antonyms');
-  li.addEventListener('click', () => {
-    antonymsDiv.style.display = antonymsDiv.style.display === 'block' ? 'none' : 'block';
-  });
-
-  wordList.appendChild(li);
-});
-</script>
-
+<script src="app.js"></script>
 </body>
 </html>
