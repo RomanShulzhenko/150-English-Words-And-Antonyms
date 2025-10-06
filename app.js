@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Красочный Словарь с Анимацией</title>
+<title>150-English-Words-And-Antonyms</title>
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
   .header {
     width: 100%;
     height: 200px;
-    background: url(https://github.com/RomanShulzhenko/150-English-Words-And-Antonyms/blob/0b8c26b50db4870cdf72174e63cf4ffb734ecdce/%D1%88%D0%B0%D0%BF%D0%BA%D0%B0%20%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F.jpg) center/cover no-repeat;
+    background: url('https://ibb.co/gLjWmNfB') center/cover no-repeat;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -38,10 +38,11 @@
     cursor: pointer;
     opacity: 0;
     transform: translateY(30px);
-    transition: all 0.5s ease, background 0.3s ease;
+    transition: all 0.5s ease, transform 0.3s ease;
     background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
     color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: relative;
   }
 
   .word-item.show {
@@ -51,12 +52,18 @@
 
   .word-item:hover {
     transform: scale(1.05);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.4);
+    box-shadow: 0 8px 20px rgba(255,255,255,0.6), 0 8px 20px rgba(0,0,0,0.3);
   }
 
   .word-item.active {
+    animation: pulse 0.6s ease;
     background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-    color: #fff;
+  }
+
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); opacity: 0.9; }
+    100% { transform: scale(1); opacity: 1; }
   }
 
   .antonyms {
@@ -65,12 +72,18 @@
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.5s ease;
+    transform: translateX(-20px);
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
   }
 
   .word-item.show-antonyms .antonyms {
     opacity: 1;
     max-height: 100px;
+    transform: translateX(0);
   }
 
   strong {
@@ -81,6 +94,25 @@
     margin-left: 10px;
     font-size: 1.1em;
   }
+
+  .word-item::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    border-radius: 15px;
+    background: linear-gradient(120deg, rgba(255,255,255,0.2), rgba(255,255,255,0.0), rgba(255,255,255,0.2));
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .word-item:hover::after {
+    opacity: 1;
+    transform: rotate(10deg);
+  }
+
 </style>
 </head>
 <body>
@@ -122,14 +154,15 @@ words.forEach((w, i) => {
   
   li.addEventListener('click', () => {
     li.classList.toggle('show-antonyms');
-    li.classList.toggle('active');
+    li.classList.add('active');
+    setTimeout(() => li.classList.remove('active'), 600);
   });
 
   wordList.appendChild(li);
 
   setTimeout(() => {
     li.classList.add('show');
-  }, i * 150); // задержка появления каждого слова
+  }, i * 150);
 });
 </script>
 
